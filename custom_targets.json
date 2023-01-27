@@ -1,0 +1,26 @@
+{
+        "BLUE_PILL": {
+                "inherits": ["NUCLEO_F103RB"],
+                "device_has_add": [
+            		"USBDEVICE"
+       		],
+			"device_has_remove":[
+				"SERIAL_FC",
+				"SPI",
+				"SPISLAVE",
+				"SPI_ASYNCH",
+				"SLEEP",
+				"I2CSLAVE",
+				"I2C_ASYNCH",
+				"RTC",
+				"FLASH",
+				"STDIO_MESSAGES",
+				"WATCHDOG",
+				"RESET_REASON"
+			],
+			"overrides":{
+				"clock_source": "USE_PLL_HSE_XTAL"
+			}
+        }
+}
+

@@ -1,0 +1,14 @@
+[
+	{"key": "target", "form": "text", "lbl": "Target ($TARGET)", "default": "BLUE_PILL"},
+	{"key": "toolchain_path", "form": "text", "lbl": "Toolchain Path", "default": "/opt/gcc-arm-none-eabi-latest/bin"},
+	{"key": "flash_command", "form": "text", "lbl": "Flash command", "default": "st-flash --reset --flash=128k write BUILD/$TARGET/GCC_ARM/*.bin 0x8000000"},
+	{"key": "dl_mbed", "form": "text", "lbl": "Download URL for mbed-os", "default": "https://api.github.com/repos/ARMmbed/mbed-os/tarball/mbed-os-6.16.0"},
+	{"key": "raster_stack_size", "form": "text", "lbl": "Raster stack size [B]", "default": "1024"},
+	{"key": "serial_port", "form": "text", "lbl": "Serial Port", "default": "/dev/ttyACM0"},
+	{"key": "serial_baudrate", "form": "text", "lbl": "Serail Baudrate", "default": "500000"},
+	{"key": "serial_pin_tx", "form": "text", "lbl": "Pin TX (NC == Disabled)", "default": "CONSOLE_TX"},
+	{"key": "serial_pin_rx", "form": "text", "lbl": "Pin RX", "default": "CONSOLE_RX"},
+	{"key": "use_usb", "form": "checkbox", "lbl": "Use USB-CDC when available", "default": true },
+	{"key": "usb_device_num", "form": "text", "lbl": "USB Device Number", "default": "0"},
+	{"key": "skip", "form": "checkbox", "lbl": "Skip build, only connect", "default": false }
+]

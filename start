@@ -1,0 +1,20 @@
+#!/bin/bash
+
+#exit an any error
+set -e
+
+function get_config_var()
+{
+	cat config.json | grep "\"$1\"" | sed -e 's/.*": "//' -e 's/".*//'
+}
+
+if [ ! -f ./uart_to_abmt ]; then
+	echo "Compile uart_to_abmt..."
+	g++ -std=c++17 -g uart_to_abmt.cpp -I./shared ./shared/src/linux/io/eio.cpp ./shared/src/linux/util/bt_exception.cpp -o uart_to_abmt
+fi
+
+PORT=$(get_config_var serial_port)
+BAUD=$(get_config_var serial_baudrate)
+
+echo "Connecting..."
+./uart_to_abmt $PORT $BAUD

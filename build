@@ -1,0 +1,95 @@
+#!/bin/bash
+
+#exit an any error
+set -e
+
+function get_config_var()
+{
+	cat config.json | grep "\"$1\"" | sed -e 's/.*": "//' -e 's/".*//'
+}
+
+SKIP=$(cat config.json | grep skip | sed -e "s/.*: //" -e 's/,.*$//')
+if [ "$SKIP" == "true" ]; then
+	exit 0
+fi
+
+###################################################
+# Download and extract mbed
+###################################################
+
+DOWNLOAD_LINK=$(get_config_var dl_mbed);
+
+if [ ! -d "mbed-os" ]; then
+	echo "Downloading mbed-os..."
+	
+	wget $DOWNLOAD_LINK -q -O mbed.tar.gz
+	echo "Extracting mbed-os..."
+	HEAD_OF_DL=$(head -c 2 mbed.tar.gz | tr '\0' '\n')
+	if [ "$HEAD_OF_DL" = "PK" ]; then
+	    # Ups its a zip file
+		unzip mbed.tar.gz > /dev/null
+	else
+		tar xf mbed.tar.gz
+	fi
+	mv *mbed-os* mbed-os
+	rm mbed.tar.gz
+fi
+
+###################################################
+# create main.h
+###################################################
+
+USB_DEVICE_NUM=$(get_config_var usb_device_num)
+RASTER_STACK_SIZE=$(get_config_var raster_stack_size)
+BAUD=$(get_config_var serial_baudrate)
+STX=$(get_config_var serial_pin_tx)
+SRX=$(get_config_var serial_pin_rx)
+USE_USB=$(cat config.json | grep use_usb | sed -e "s/.*: //" -e 's/,.*$//')
+
+DISABLE_COM=""
+if [ "$STX" == "NC" ]; then
+	DISABLE_COM="#define DISABLE_ABMT_SERIAL_COM"
+fi
+
+
+#create main.h
+NEW_HEADER="#ifndef INC_MAIN_H_
+#define INC_MAIN_H_
+
+#include \"mbed.h\"
+
+#define USB_DEVICE_NUM '_D_N_'
+#define RASTER_STACK_SIZE _R_S_ 
+#define SERIAL_BAUDRATE _S_B_
+#define SERIAL_PIN_TX _S_T_
+#define SERIAL_PIN_RX _S_R_
+#define COM_USE_USB _U_U_
+_DIS_
+
+#endif
+"
+NEW_HEADER=$(echo "$NEW_HEADER" | sed -e "s/_D_N_/$USB_DEVICE_NUM/" -e "s/_R_S_/$RASTER_STACK_SIZE/" -e "s/_S_B_/$BAUD/" -e "s/_U_U_/$USE_USB/" -e "s/_S_T_/$STX/" -e "s/_S_R_/$SRX/" -e "s/_DIS_/$DISABLE_COM/")
+OLD_HEADER=$(cat main.h 2>/dev/null || echo "" )
+
+if [ "$NEW_HEADER" != "$OLD_HEADER" ]; then
+	echo "$NEW_HEADER" > main.h
+fi
+
+###################################################
+# Compile and flash
+###################################################
+
+TARGET=$(get_config_var target)
+TOOLCHAIN=GCC_ARM
+TOOLCHAIN_PATH=$(get_config_var toolchain_path)
+FLASH_COMMAND=$(get_config_var flash_command);
+
+if [ ! -d "$TOOLCHAIN_PATH" ]; then
+	echo "Error: Toolchain not found..."
+	exit 1
+fi
+
+mbed config -G GCC_ARM_PATH $(get_config_var toolchain_path) 
+mbed compile --target $TARGET --toolchain $TOOLCHAIN
+echo flashing: 
+eval $FLASH_COMMAND
