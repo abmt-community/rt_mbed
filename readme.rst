@@ -11,8 +11,10 @@ Notes
 Installation
 ============
 - Go to workspace
+
   - git clone https://github.com/abmt-community/rt_mbed.git
   - git clone https://github.com/abmt-community/mbed_nodes.git
+
 - sudo apt-get install pip wget openocd zip
 - pip install mbed-cli jinja2 pyyaml jsonschema mbed_ls mbed_host_tests mbed_greentea pyelftools pycryptodome pyusb cmsis_pack_manager psutil cryptography click cbor
 - restart console for PATH update
