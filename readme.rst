@@ -44,7 +44,7 @@ Tips
 - pyocd can decode threads
 - The build-directory contains a debug.sh that might help
 - mbeds hard fault handler has a blinking pattern. You could try to increase the stack size.
-- You can use pyocd to flash. STM32F103 need a full chip erase. ``pyocd load --target stm32f103rc -e chip path/to/bin_hex_or_elf``
+- You can use pyocd to flash. STM32F103 need a full chip erase. ``pyocd flash --target stm32f103rc -e chip path/to/bin_hex_or_elf``
 - When mbed crashes it dumps some info on the serial port (Pins: CONSOLE_RX/-TX).
 
 Raspbery Pi Pico Notes
@@ -56,10 +56,10 @@ Raspbery Pi Pico Notes
 
 Example flash commands
 ----------------------
- - pyocd load BUILD/$TARGET/GCC_ARM/*.bin -f 4000000 -e chip -t stm32f103rc
- - st-flash --reset --flash=128k write BUILD/$TARGET/GCC_ARM/*.bin 0x8000000
- - stm32flash -b 576000 -w BUILD/$TARGET/GCC_ARM/*.bin -v -g 0x0 /dev/ttyUSB0
- - test -f /media/<username>/RPI-RP2/INFO_UF2.TXT && /path_to_elf2uf2/elf2uf2 BUILD/$TARGET/GCC_ARM/*.elf /media/<username>/RPI-RP2/mbed.uf2
+- pyocd flash BUILD/$TARGET/GCC_ARM/*.bin -f 4000000 -e chip -t stm32f103rc
+- st-flash --reset --flash=128k write BUILD/$TARGET/GCC_ARM/*.bin 0x8000000
+- stm32flash -b 576000 -w BUILD/$TARGET/GCC_ARM/*.bin -v -g 0x0 /dev/ttyUSB0
+- test -f /media/<username>/RPI-RP2/INFO_UF2.TXT && /path_to_elf2uf2/elf2uf2 BUILD/$TARGET/GCC_ARM/*.elf /media/<username>/RPI-RP2/mbed.uf2
 
 Konwn Issues
 ============
