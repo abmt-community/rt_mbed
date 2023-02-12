@@ -5,6 +5,7 @@
 
 
 #include "main.h"
+#include "bare_metall_loop.h"
 #include "mbed.h"
 
 #include <abmt/os.h>
@@ -34,6 +35,14 @@ void abmt::os::die_if(bool condition, std::string msg){
 	if(condition){
 		abmt::os::die(msg);
 	}
+}
+
+void bare_metall_trigger_main_loop(){
+	// Noting to do here.
+	// Single threaded runtimes can use this function
+	// to trigger their main loop. Interrupts can call
+	// this function to signal that new async rasters 
+	// are ready.
 }
 
 auto global_start_time = Kernel::get_ms_count();

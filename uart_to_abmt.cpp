@@ -33,7 +33,7 @@ int main(int argc, char* argv[]){
 	string port = argv[1];
 	int baud_rate = stol(argv[2]);
 	usleep(150*1000); // controller reset delay
-	for(int i = 0; i < 35; i++){
+	for(int i = 0; i < 60; i++){
 		if(std::filesystem::exists(port)){
 			break;
 		}
