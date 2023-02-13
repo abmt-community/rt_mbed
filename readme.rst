@@ -56,6 +56,7 @@ Raspbery Pi Pico Notes
 
 Example flash commands
 ----------------------
+- pyocd flash BUILD/$TARGET/GCC_ARM/*.elf -t rp2040
 - pyocd flash BUILD/$TARGET/GCC_ARM/*.bin -f 4000000 -e chip -t stm32f103rc
 - st-flash --reset --flash=128k write BUILD/$TARGET/GCC_ARM/*.bin 0x8000000
 - stm32flash -b 576000 -w BUILD/$TARGET/GCC_ARM/*.bin -v -g 0x0 /dev/ttyUSB0
