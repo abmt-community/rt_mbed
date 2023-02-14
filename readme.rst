@@ -49,6 +49,7 @@ Tips
 
 Raspbery Pi Pico Notes
 ======================
+- mbed port not finished yet (Feb 23)...
 - mbed: https://github.com/arduino/mbed-os/archive/refs/heads/extrapatches-6.16.0.zip
 - Target: RASPBERRY_PI_PICO
 - elf2uf2: https://github.com/rej696/elf2uf2
@@ -57,7 +58,7 @@ Raspbery Pi Pico Notes
 Example flash commands
 ----------------------
 - pyocd flash BUILD/$TARGET/GCC_ARM/*.elf -t rp2040
-- pyocd flash BUILD/$TARGET/GCC_ARM/*.bin -f 4000000 -e chip -t stm32f103rc
+- pyocd flash BUILD/$TARGET/GCC_ARM/*.elf -e chip -t stm32f103rc
 - st-flash --reset --flash=128k write BUILD/$TARGET/GCC_ARM/*.bin 0x8000000
 - stm32flash -b 576000 -w BUILD/$TARGET/GCC_ARM/*.bin -v -g 0x0 /dev/ttyUSB0
 - test -f /media/<username>/RPI-RP2/INFO_UF2.TXT && /path_to_elf2uf2/elf2uf2 BUILD/$TARGET/GCC_ARM/*.elf /media/<username>/RPI-RP2/mbed.uf2
