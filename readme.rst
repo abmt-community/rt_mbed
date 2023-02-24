@@ -1,3 +1,10 @@
+=====================
+MBED runtime for abmt
+=====================
+- This is an example runtime that shows how abmt can be used for embedded devices.
+- This runtime / code is made to be modified.
+- Many usecases may need modifications. Feel free to take this as base for your runtime.
+
 Notes
 =====
 - This code is made to be modified by you! This is a very simple runtime 

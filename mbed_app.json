@@ -5,7 +5,9 @@
         "*": {
 			"rtos.main-thread-stack-size": 2048, 
 			"platform.heap-stats-enabled": false,
-			"platform.stack-stats-enabled": false
+			"platform.stack-stats-enabled": false,
+			"drivers.uart-serial-rxbuf-size": 48,
+			"drivers.uart-serial-txbuf-size": 48
         }
     }
 }
