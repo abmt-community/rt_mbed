@@ -63,6 +63,10 @@ STX=$(get_config_var serial_pin_tx)
 SRX=$(get_config_var serial_pin_rx)
 USE_USB=$(cat config.json | grep use_usb | sed -e "s/.*: //" -e 's/,.*$//')
 
+if [ "$USE_USB" == "true" ]; then
+	BAUD=10000000
+fi
+
 DISABLE_COM=""
 if [ "$STX" == "NC" ]; then
 	DISABLE_COM="#define DISABLE_ABMT_SERIAL_COM"
@@ -99,7 +103,10 @@ fi
 TARGET=$(get_config_var target)
 TOOLCHAIN=GCC_ARM
 TOOLCHAIN_PATH=./gcc-arm
-FLASH_COMMAND=$(get_config_var flash_command);
+DIR_NAME=$(basename $PWD)
+ELF_FILE="BUILD/${TARGET}/GCC_ARM/${DIR_NAME}.elf"
+BIN_FILE="BUILD/${TARGET}/GCC_ARM/${DIR_NAME}.bin"
+FLASH_COMMAND=$(get_config_var flash_command | sed -e "s%_ELF_FILE_%${ELF_FILE}%g" | sed -e "s%_BIN_FILE_%${BIN_FILE}%");
 
 if [ ! -d "$TOOLCHAIN_PATH" ]; then
 	echo "Error: Toolchain not found..."

@@ -1,9 +1,10 @@
 =====================
-MBED runtime for abmt
+Mbed runtime for abmt
 =====================
 - This is an example runtime that shows how abmt can be used for embedded devices.
 - This runtime / code is made to be modified.
 - Many usecases may need modifications. Feel free to take this as base for your runtime.
+- Example nodes for this runtime can be downloaded at https://github.com/abmt-community/mbed_nodes
 
 Notes
 =====
@@ -27,10 +28,21 @@ Installation
 - restart console for PATH update
 - Download gcc 9.x from https://developer.arm.com/downloads/-/gnu-rm and remember folder for toolchain path
 
-MBED sources
+Mbed sources
 ============
 - https://api.github.com/repos/ARMmbed/mbed-os/tarball/mbed-os-6.16.0
 - https://github.com/arduino/mbed-os/archive/refs/heads/extrapatches-6.16.0.zip
+
+Example flash commands
+======================
+- NOTE: The strings '_ELF_FILE_' and '_BIN_FILE_' in the flash command will be replaces by the actual binary created by mbed.
+- openocd -f  interface/stlink.cfg -f target/stm32f1x.cfg -c 'program _ELF_FILE_ verify reset exit'
+- openocd -f  interface/cmsis-dap.cfg -f target/stm32f1x.cfg -c 'program _ELF_FILE_ verify reset exit'
+- pyocd flash _ELF_FILE_ -e chip -t stm32f103rc
+- st-flash --reset --flash=128k write  _BIN_FILE_ 0x8000000
+- stm32flash -b 576000 -w  _BIN_FILE_ -v -g 0x0 /dev/ttyUSB0
+- test -f /media/<username>/RPI-RP2/INFO_UF2.TXT && /path_to_elf2uf2/elf2uf2 BUILD/$TARGET/GCC_ARM/*.elf /media/<username>/RPI-RP2/mbed.uf2
+- pyocd flash BUILD/$TARGET/GCC_ARM/*.elf -t rp2040
 
 Debug
 =====
@@ -61,14 +73,6 @@ Raspbery Pi Pico Notes
 - Target: RASPBERRY_PI_PICO
 - elf2uf2: https://github.com/rej696/elf2uf2
 - tip: enable auto-mount
-
-Example flash commands
-----------------------
-- pyocd flash BUILD/$TARGET/GCC_ARM/*.elf -t rp2040
-- pyocd flash BUILD/$TARGET/GCC_ARM/*.elf -e chip -t stm32f103rc
-- st-flash --reset --flash=128k write BUILD/$TARGET/GCC_ARM/*.bin 0x8000000
-- stm32flash -b 576000 -w BUILD/$TARGET/GCC_ARM/*.bin -v -g 0x0 /dev/ttyUSB0
-- test -f /media/<username>/RPI-RP2/INFO_UF2.TXT && /path_to_elf2uf2/elf2uf2 BUILD/$TARGET/GCC_ARM/*.elf /media/<username>/RPI-RP2/mbed.uf2
 
 Konwn Issues
 ============
