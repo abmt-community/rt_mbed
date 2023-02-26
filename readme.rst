@@ -8,8 +8,6 @@ Mbed runtime for abmt
 
 Notes
 =====
-- This code is made to be modified by you! This is a very simple runtime 
-  that might need modifications to suite your needs.
 - Fastest raster can be 1ms (1ms clock) or async.
 - Saving parameters is not supported. After reset they have
   the default value
