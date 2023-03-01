@@ -104,8 +104,8 @@ TARGET=$(get_config_var target)
 TOOLCHAIN=GCC_ARM
 TOOLCHAIN_PATH=./gcc-arm
 DIR_NAME=$(basename $PWD)
-ELF_FILE="BUILD/${TARGET}/GCC_ARM/${DIR_NAME}.elf"
-BIN_FILE="BUILD/${TARGET}/GCC_ARM/${DIR_NAME}.bin"
+ELF_FILE="BUILD/${TARGET}/GCC_ARM-RELEASE/${DIR_NAME}.elf"
+BIN_FILE="BUILD/${TARGET}/GCC_ARM-RELEASE/${DIR_NAME}.bin"
 FLASH_COMMAND=$(get_config_var flash_command | sed -e "s%_ELF_FILE_%${ELF_FILE}%g" | sed -e "s%_BIN_FILE_%${BIN_FILE}%");
 
 if [ ! -d "$TOOLCHAIN_PATH" ]; then
@@ -113,7 +113,14 @@ if [ ! -d "$TOOLCHAIN_PATH" ]; then
 	exit 1
 fi
 
+LTO=$(cat config.json | grep lto | sed -e "s/.*: //" -e 's/,.*$//')
+LTO_STR=""
+if [ "$LTO" == "true" ]; then
+	LTO_STR="--profile ./mbed-os/tools/profiles/extensions/lto.json"
+fi
+
+
 mbed config -G GCC_ARM_PATH $(get_config_var toolchain_path) 
-mbed compile --target $TARGET --toolchain $TOOLCHAIN
+mbed compile --target $TARGET --toolchain $TOOLCHAIN --profile ./mbed-os/tools/profiles/release.json $LTO_STR
 echo flashing: 
 eval $FLASH_COMMAND
