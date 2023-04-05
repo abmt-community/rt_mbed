@@ -27,7 +27,7 @@ void abmt::os::die(std::string s){
 	abmt::os::log_err("Fatal Error:");
 	abmt::os::log_err(s);
 	abmt::os::log_err("Reset!");
-	ThisThread::sleep_for(5);
+	ThisThread::sleep_for(std::chrono::milliseconds(5));
 	NVIC_SystemReset();
 }
 
@@ -45,14 +45,14 @@ void bare_metall_trigger_main_loop(){
 	// are ready.
 }
 
-auto global_start_time = Kernel::get_ms_count();
 
+auto start_time = Kernel::Clock::now();
 abmt::time abmt::time::now(){
-	return  abmt::time((Kernel::get_ms_count() - global_start_time)*1000*1000);
+	return {std::chrono::duration_cast<std::chrono::nanoseconds>(Kernel::Clock::now() - start_time).count()};
 }
 
 uint64_t now_ms(){
-	return Kernel::get_ms_count();
+	return std::chrono::duration_cast<std::chrono::milliseconds>(Kernel::Clock::now() - start_time).count();
 }
 
 struct mbed_raster{
@@ -88,7 +88,7 @@ struct mbed_raster{
 			if(raster->is_sync){
 				int32_t sleep_time = (start_ms + raster->n_ticks*interval_ms) - now_ms();
 				if(sleep_time >= 0){
-					ThisThread::sleep_for(sleep_time);
+					ThisThread::sleep_for(std::chrono::milliseconds(sleep_time));
 				}else{
 					raster->n_ticks = (now_ms()-start_ms)/interval_ms;
 				}
@@ -114,7 +114,7 @@ uint32_t bytes_send = 0;
 
 int main() 
 {  
-	ThisThread::sleep_for(5);
+	ThisThread::sleep_for(std::chrono::milliseconds(5));
 	com_device* com = get_com_device();
 	auto mdl_ptr = abmt::rt::get_model();
 	for(size_t raster_index = 0; raster_index < mdl_ptr->rasters.length; raster_index++){
@@ -135,7 +135,7 @@ int main()
 	bool nothing_done = false;
 	while(1) {
 		if(nothing_done){
-			ThisThread::sleep_for(1); // In low power usecases you may want to sleep longer here
+			ThisThread::sleep_for(std::chrono::milliseconds(1)); // In low power usecases you may want to sleep longer here
 		}else{
 			ThisThread::yield();
 		}
