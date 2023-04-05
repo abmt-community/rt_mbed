@@ -116,16 +116,18 @@ int main()
 {  
 	ThisThread::sleep_for(std::chrono::milliseconds(5));
 	com_device* com = get_com_device();
+
 	auto mdl_ptr = abmt::rt::get_model();
-	for(size_t raster_index = 0; raster_index < mdl_ptr->rasters.length; raster_index++){
-		new mbed_raster(mdl_ptr->rasters[raster_index], raster_index);
-	}
 
 	// feel free to change this, when you have large signalnames or huge object definitions
 	adapter.max_def_size = 265;
 	adapter.set_model(mdl_ptr);
 	adapter.connection.set_source(&in);
 	adapter.connection.set_sink(&out);
+
+	for(size_t raster_index = 0; raster_index < mdl_ptr->rasters.length; raster_index++){
+		new mbed_raster(mdl_ptr->rasters[raster_index], raster_index);
+	}
 
 	bool buffer_error_send = false;
 
