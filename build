@@ -102,7 +102,7 @@ fi
 
 TARGET=$(get_config_var target)
 TOOLCHAIN=GCC_ARM
-TOOLCHAIN_PATH=./gcc-arm
+TOOLCHAIN_PATH=./gcc-arm/bin
 DIR_NAME=$(basename $PWD)
 ELF_FILE="BUILD/${TARGET}/GCC_ARM-RELEASE/${DIR_NAME}.elf"
 BIN_FILE="BUILD/${TARGET}/GCC_ARM-RELEASE/${DIR_NAME}.bin"
@@ -120,7 +120,7 @@ if [ "$LTO" == "true" ]; then
 fi
 
 
-mbed config -G GCC_ARM_PATH $(get_config_var toolchain_path) 
+mbed config -G GCC_ARM_PATH $TOOLCHAIN_PATH 
 mbed compile --target $TARGET --toolchain $TOOLCHAIN --profile ./mbed-os/tools/profiles/release.json $LTO_STR
 echo flashing: 
 eval $FLASH_COMMAND

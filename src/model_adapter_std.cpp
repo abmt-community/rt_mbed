@@ -24,6 +24,7 @@ void model_adatper_std::on_hello(uint16_t version){
 	if(version != ABMT_VERSION){
 		on_version_error();
 	}
+	connected = true;
 	def_idx = 0;
 };
 
@@ -201,6 +202,7 @@ void model_adatper_std::on_set_parameter(abmt::blob& data){
 
 void model_adatper_std::on_command(string cmd){
 	if(cmd == "quit"){
+		connected = false;
 		on_quit();
 	}
 }

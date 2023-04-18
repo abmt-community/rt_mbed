@@ -137,7 +137,11 @@ int main()
 	bool nothing_done = false;
 	while(1) {
 		if(nothing_done){
-			ThisThread::sleep_for(std::chrono::milliseconds(1)); // In low power usecases you may want to sleep longer here
+			if(adapter.connected){
+				ThisThread::sleep_for(std::chrono::milliseconds(1));
+			}else{
+				ThisThread::sleep_for(std::chrono::seconds(1));
+			}
 		}else{
 			ThisThread::yield();
 		}

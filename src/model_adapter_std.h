@@ -29,6 +29,7 @@ public:
 
 	size_t max_def_size = 63*1024;
 	size_t def_idx = 0;
+	bool connected = false;
 
 	void set_model(abmt::rt::model* m);
 
