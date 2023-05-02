@@ -7,6 +7,7 @@
 #define MODEL_ADAPTER_STD_H_
 
 #include <abmt/rt/model_adapter.h>
+#include <abmt/mutex.h>
 #include <vector>
 #include <functional>
 #include <cstdint>
@@ -50,10 +51,11 @@ public:
 	void save_parameters();
 	void clear_daq_lists();
 
-	virtual ~model_adatper_std();
 	void send_daq(size_t raster);
 
 	void send_all_parameters();
+
+	virtual ~model_adatper_std();
 
 };
 

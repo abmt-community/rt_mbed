@@ -134,11 +134,15 @@ int main()
 	auto last_online_send = now_ms();
 	osThreadSetPriority(osThreadGetId(), osPriorityLow);
 
+	mbed_file_handle(STDIN_FILENO)->enable_input(false);
+
 	bool nothing_done = false;
 	while(1) {
 		if(nothing_done){
 			if(adapter.connected){
-				ThisThread::sleep_for(std::chrono::milliseconds(1));
+				ThisThread::yield();
+				// sleeping hier may save something but could also break usb (nrf)
+				// ThisThread::sleep_for(std::chrono::milliseconds(1));
 			}else{
 				ThisThread::sleep_for(std::chrono::seconds(1));
 			}

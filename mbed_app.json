@@ -3,12 +3,18 @@
     ],
     "target_overrides": {
         "*": {
-			"rtos.main-thread-stack-size": 2048, 
-			"platform.heap-stats-enabled": false,
-			"platform.stack-stats-enabled": false,
-			"drivers.uart-serial-rxbuf-size": 48,
-			"drivers.uart-serial-txbuf-size": 48
-        }
+		"platform.minimal-printf-enable-floating-point": true,
+		"platform.minimal-printf-enable-64-bit": true,
+		"platform.minimal-printf-set-floating-point-max-decimals": 4,
+		"rtos.main-thread-stack-size": 2048, 
+		"platform.heap-stats-enabled": false,
+		"platform.stack-stats-enabled": false,
+		"drivers.uart-serial-rxbuf-size": 48,
+		"drivers.uart-serial-txbuf-size": 48
+        },
+	"MCU_NRF52832": {
+		"cordio.desired-att-mtu": 64
+	}
     }
 }
 

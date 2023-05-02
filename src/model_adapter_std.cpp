@@ -121,6 +121,7 @@ void model_adatper_std::on_request_parameter_def(){
 };
 
 void model_adatper_std::on_set_daq_list(abmt::blob& lst){
+	send_mtx.lock();
 
 	for(size_t i = 0; i < mdl->rasters.length; ++i){
 		daq_lists[i].clear();
@@ -134,6 +135,8 @@ void model_adatper_std::on_set_daq_list(abmt::blob& lst){
 			daq_lists[signal.raster_index].push_back({idx,i});
 		}
 	}
+
+	send_mtx.unlock();
 
 	send(abmt::rt::cmd::ack_set_daq_list);
 };
@@ -203,6 +206,7 @@ void model_adatper_std::on_set_parameter(abmt::blob& data){
 void model_adatper_std::on_command(string cmd){
 	if(cmd == "quit"){
 		connected = false;
+		clear_daq_lists();
 		on_quit();
 	}
 }
@@ -212,14 +216,12 @@ void model_adatper_std::save_parameters(){
 }
 
 void model_adatper_std::clear_daq_lists(){
+	send_mtx.lock();
 	for(size_t i = 0; i < mdl->rasters.length; ++i){
 		daq_lists[i].clear();
 	}
+	send_mtx.unlock();
 }
-
-model_adatper_std::~model_adatper_std(){
-
-};
 
 void model_adatper_std::send_daq(size_t raster){
 	auto now = abmt::time::now();
@@ -285,4 +287,10 @@ void model_adatper_std::send_all_parameters(){
 	}
 
 	send(abmt::rt::cmd::paq_data,blk);
+}
+
+model_adatper_std::~model_adatper_std(){
+	if(daq_lists != 0){
+		delete[] daq_lists;
+	}
 }
