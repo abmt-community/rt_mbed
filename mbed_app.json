@@ -9,10 +9,10 @@
 		"rtos.main-thread-stack-size": 2048, 
 		"platform.heap-stats-enabled": false,
 		"platform.stack-stats-enabled": false,
-		"drivers.uart-serial-rxbuf-size": 48,
-		"drivers.uart-serial-txbuf-size": 48
+		"drivers.uart-serial-rxbuf-size": 128,
+		"drivers.uart-serial-txbuf-size": 128
         },
-	"MCU_NRF52832": {
+	"NRF52840_DK": {
 		"cordio.desired-att-mtu": 64
 	}
     }

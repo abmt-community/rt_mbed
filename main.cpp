@@ -5,7 +5,6 @@
 
 
 #include "main.h"
-#include "bare_metall_loop.h"
 #include "mbed.h"
 
 #include <abmt/os.h>
@@ -36,15 +35,6 @@ void abmt::os::die_if(bool condition, std::string msg){
 		abmt::os::die(msg);
 	}
 }
-
-void bare_metall_trigger_main_loop(){
-	// Noting to do here.
-	// Single threaded runtimes can use this function
-	// to trigger their main loop. Interrupts can call
-	// this function to signal that new async rasters 
-	// are ready.
-}
-
 
 auto start_time = Kernel::Clock::now();
 abmt::time abmt::time::now(){
@@ -140,9 +130,7 @@ int main()
 	while(1) {
 		if(nothing_done){
 			if(adapter.connected){
-				ThisThread::yield();
-				// sleeping hier may save something but could also break usb (nrf)
-				// ThisThread::sleep_for(std::chrono::milliseconds(1));
+				ThisThread::sleep_for(std::chrono::milliseconds(1));
 			}else{
 				ThisThread::sleep_for(std::chrono::seconds(1));
 			}

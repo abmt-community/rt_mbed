@@ -23,6 +23,7 @@ class model_adatper_std: public abmt::rt::model_adatper{
 public:
 
 	daq_list_t* daq_lists = 0;
+	abmt::mutex* daq_locks = 0;
 	std::vector<uint32_t>   paq_list;
 	std::function<void()>   on_quit = []{};
 	std::function<void()>   on_save_parameters = []{};

@@ -3,7 +3,7 @@
 	{"key": "flash_command", "form": "text", "lbl": "Flash command", "default": "st-flash --reset --flash=128k write _BIN_FILE_ 0x8000000"},
 	{"key": "dl_mbed", "form": "text", "lbl": "Download URL for mbed-os", "default": "https://api.github.com/repos/ARMmbed/mbed-os/tarball/mbed-os-6.16.0"},
 	{"key": "dl_toolchain", "form": "text", "lbl": "Download URL for toolchain", "default": "https://developer.arm.com/-/media/Files/downloads/gnu-rm/9-2020q2/gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux.tar.bz2"},
-	{"key": "raster_stack_size", "form": "text", "lbl": "Raster stack size [B]", "default": "1024"},
+	{"key": "raster_stack_size", "form": "text", "lbl": "Raster stack size [B]", "default": "2048"},
 	{"key": "serial_port", "form": "text", "lbl": "Serial Port", "default": "/dev/ttyACM0"},
 	{"key": "serial_baudrate", "form": "text", "lbl": "Serail Baudrate", "default": "115200"},
 	{"key": "serial_pin_tx", "form": "text", "lbl": "Pin TX (NC == Disabled)", "default": "CONSOLE_TX"},

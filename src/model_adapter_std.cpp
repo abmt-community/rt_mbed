@@ -16,7 +16,11 @@ void model_adatper_std::set_model(abmt::rt::model* m){
 	if(daq_lists != 0){
 		delete[] daq_lists;
 	}
+	if(daq_locks != 0){
+		delete[] daq_locks;
+	}
 	daq_lists = new daq_list_t[mdl->rasters.length];
+	daq_locks = new abmt::mutex[mdl->rasters.length];
 }
 
 
@@ -121,9 +125,9 @@ void model_adatper_std::on_request_parameter_def(){
 };
 
 void model_adatper_std::on_set_daq_list(abmt::blob& lst){
-	send_mtx.lock();
 
 	for(size_t i = 0; i < mdl->rasters.length; ++i){
+		daq_locks[i].lock();
 		daq_lists[i].clear();
 	}
 
@@ -135,8 +139,9 @@ void model_adatper_std::on_set_daq_list(abmt::blob& lst){
 			daq_lists[signal.raster_index].push_back({idx,i});
 		}
 	}
-
-	send_mtx.unlock();
+	for(size_t i = 0; i < mdl->rasters.length; ++i){
+		daq_locks[i].unlock();
+	}
 
 	send(abmt::rt::cmd::ack_set_daq_list);
 };
@@ -216,11 +221,11 @@ void model_adatper_std::save_parameters(){
 }
 
 void model_adatper_std::clear_daq_lists(){
-	send_mtx.lock();
 	for(size_t i = 0; i < mdl->rasters.length; ++i){
+		daq_locks[i].lock();
 		daq_lists[i].clear();
+		daq_locks[i].unlock();
 	}
-	send_mtx.unlock();
 }
 
 void model_adatper_std::send_daq(size_t raster){
@@ -292,5 +297,8 @@ void model_adatper_std::send_all_parameters(){
 model_adatper_std::~model_adatper_std(){
 	if(daq_lists != 0){
 		delete[] daq_lists;
+	}
+	if(daq_locks != 0){
+		delete[] daq_locks;
 	}
 }
