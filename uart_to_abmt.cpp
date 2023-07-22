@@ -1,3 +1,7 @@
+/**
+ * Author: Hendrik van Arragon, 2022
+ * SPDX-License-Identifier: MIT
+ */
 #include <iostream>
 #include <filesystem>
 #include <abmt/io/eio.h>
@@ -8,19 +12,19 @@ using namespace abmt;
 using namespace abmt::io;
 using namespace std;
 
-void abmt::os::log(std::string s){
+void abmt::log(std::string s){
 	cout << s << endl;
 }
-void abmt::os::log_err(std::string s){
+void abmt::log_err(std::string s){
 	cout << s << endl;
 }
-void abmt::os::die(std::string s){
+void abmt::die(std::string s){
 	throw abmt::util::bt_exception(s);
 }
 
-void abmt::os::die_if(bool condition, std::string msg){
+void abmt::die_if(bool condition, std::string msg){
 	if(condition){
-		abmt::os::die(msg);
+		abmt::die(msg);
 	}
 }
 

@@ -1,3 +1,7 @@
+/**
+ * Author: Hendrik van Arragon, 2022
+ * SPDX-License-Identifier: MIT
+ */
 #ifndef COM_DEVICE_H_
 #define COM_DEVICE_H_
 

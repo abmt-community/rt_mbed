@@ -1,0 +1,1 @@
+../shared/src/common/img/img_bw.cpp

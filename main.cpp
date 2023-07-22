@@ -16,23 +16,23 @@
 
 model_adatper_std adapter;
 
-void abmt::os::log(std::string s){
+void abmt::log(std::string s){
 	adapter.log(s);
 }
-void abmt::os::log_err(std::string s){
+void abmt::log_err(std::string s){
 	adapter.log_err(s);
 }
-void abmt::os::die(std::string s){
-	abmt::os::log_err("Fatal Error:");
-	abmt::os::log_err(s);
-	abmt::os::log_err("Reset!");
+void abmt::die(std::string s){
+	abmt::log_err("Fatal Error:");
+	abmt::log_err(s);
+	abmt::log_err("Reset!");
 	ThisThread::sleep_for(std::chrono::milliseconds(5));
 	NVIC_SystemReset();
 }
 
-void abmt::os::die_if(bool condition, std::string msg){
+void abmt::die_if(bool condition, std::string msg){
 	if(condition){
-		abmt::os::die(msg);
+		abmt::die(msg);
 	}
 }
 
@@ -45,14 +45,14 @@ uint64_t now_ms(){
 	return std::chrono::duration_cast<std::chrono::milliseconds>(Kernel::Clock::now() - start_time).count();
 }
 
-struct mbed_raster{
+struct mbed_task{
 	Thread thread;
 	abmt::rt::raster* raster;
 	uint32_t raster_index;
 	uint32_t interval_ms;
 	uint64_t start_ms;
 
-	mbed_raster(abmt::rt::raster* r, uint32_t r_idx):thread(osPriorityNormal,RASTER_STACK_SIZE, nullptr, r->name), raster(r), raster_index(r_idx){
+	mbed_task(abmt::rt::raster* r, uint32_t r_idx):thread(osPriorityNormal,RASTER_STACK_SIZE, nullptr, r->name), raster(r), raster_index(r_idx){
 		interval_ms = raster->interval.ms();
 		start_ms = now_ms();
 		thread.start([this]{
@@ -116,7 +116,7 @@ int main()
 	adapter.connection.set_sink(&out);
 
 	for(size_t raster_index = 0; raster_index < mdl_ptr->rasters.length; raster_index++){
-		new mbed_raster(mdl_ptr->rasters[raster_index], raster_index);
+		new mbed_task(mdl_ptr->rasters[raster_index], raster_index);
 	}
 
 	bool buffer_error_send = false;
@@ -172,8 +172,8 @@ int main()
 				buffer_error_send = true;
 				out.flush();
 				adapter.clear_daq_lists();
-				abmt::os::log_err("Error: Data in outbuffer can't be send in 0.1s.");
-				abmt::os::log_err("Datatransmission stopped. Reduce viewed signals...");
+				abmt::log_err("Error: Data in outbuffer can't be send in 0.1s.");
+				abmt::log_err("Datatransmission stopped. Reduce viewed signals...");
 			}
 		}
     }

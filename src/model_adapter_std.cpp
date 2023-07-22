@@ -204,7 +204,7 @@ void model_adatper_std::on_set_parameter(abmt::blob& data){
 		}
 		save_parameters();
 	}else{
-		abmt::os::log_err("on_set_parameter: index out of range!");
+		abmt::log_err("on_set_parameter: index out of range!");
 	}
 };
 

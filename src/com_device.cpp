@@ -1,3 +1,7 @@
+/**
+ * Author: Hendrik van Arragon, 2022
+ * SPDX-License-Identifier: MIT
+ */
 #include "com_device.h"
 #include "mbed.h"
 #include "../main.h"

@@ -1,3 +1,8 @@
+/**
+ * Author: Hendrik van Arragon, 2022
+ * SPDX-License-Identifier: MIT
+ */
+ 
 #include <abmt/mutex.h>
 #include "mbed.h"
 
