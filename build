@@ -8,6 +8,46 @@ function get_config_var()
 	cat config.json | grep "\"$1\"" | sed -e 's/.*": "//' -e 's/".*//'
 }
 
+dir_or_url(){
+	local DIR_URL=$1
+	local TARGET_DIR=$2
+	local NAME=$3
+	if [ -e "$TARGET_DIR" ]; then
+		if [ -e "$TARGET_DIR/download.file" ]; then
+			# download interrupted
+			rm -rf "$TARGET_DIR"
+		else
+			return 0
+		fi
+	fi
+	if [ -d "$DIR_URL" ]; then
+		ln -s "$DIR_URL" "$TARGET_DIR"
+	else
+		mkdir "$TARGET_DIR"
+		cd "$TARGET_DIR"
+		echo "Downloading $NAME..."
+		wget $DIR_URL -q -O download.file
+        echo "Extracting $NAME..."
+        HEAD_OF_DL=$(head -c 2 download.file | tr '\0' '\n')
+        if [ "$HEAD_OF_DL" = "PK" ]; then
+            # Its a zip file
+            unzip download.file > /dev/null
+        else
+            tar xf download.file
+        fi
+		rm download.file
+		# check if there is only on directoy. If so, move its content to this direcotry
+		if [ "$(ls | wc -l)" == 1 ]; then 
+			file=$(ls); 
+			if [ -d "$file" ]; then
+				mv "$file"/* .;
+				rm -r "$file"; 
+			fi
+		fi
+		cd ..
+	fi
+}
+
 SKIP=$(cat config.json | grep skip | sed -e "s/.*: //" -e 's/,.*$//')
 if [ "$SKIP" == "true" ]; then
 	exit 0
@@ -16,41 +56,9 @@ fi
 ###################################################
 # Download and extract mbed
 ###################################################
-DOWNLOAD_LINK=$(get_config_var dl_toolchain);
-if [ ! -d "gcc-arm" ]; then
-        echo "Downloading gcc..."
 
-        wget $DOWNLOAD_LINK -q -O toolchain.tar.gz
-        echo "Extracting gcc..."
-        HEAD_OF_DL=$(head -c 2 toolchain.tar.gz | tr '\0' '\n')
-        if [ "$HEAD_OF_DL" = "PK" ]; then
-            # Ups its a zip file
-                unzip toolchain.tar.gz > /dev/null
-        else
-                tar xf toolchain.tar.gz
-        fi
-        mv *gcc-arm* gcc-arm
-        rm toolchain.tar.gz
-fi
-
-
-DOWNLOAD_LINK=$(get_config_var dl_mbed);
-
-if [ ! -d "mbed-os" ]; then
-	echo "Downloading mbed-os..."
-	
-	wget $DOWNLOAD_LINK -q -O mbed.tar.gz
-	echo "Extracting mbed-os..."
-	HEAD_OF_DL=$(head -c 2 mbed.tar.gz | tr '\0' '\n')
-	if [ "$HEAD_OF_DL" = "PK" ]; then
-	    # Ups its a zip file
-		unzip mbed.tar.gz > /dev/null
-	else
-		tar xf mbed.tar.gz
-	fi
-	mv *mbed-os* mbed-os
-	rm mbed.tar.gz
-fi
+dir_or_url $(get_config_var dou_toolchain) gcc-arm gcc
+dir_or_url $(get_config_var dou_mbed) mbed-os mbed
 
 ###################################################
 # create main.h
