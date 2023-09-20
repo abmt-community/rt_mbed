@@ -12,17 +12,17 @@ Notes
 - Saving parameters is not supported. After reset they have
   the default value
 - Some Serial to USB convertes have a higer latency. You can try
-  'echo 1 > /sys/bus/usb-serial/devices/ttyUSB0/latency_timer'
+  ``echo 1 > /sys/bus/usb-serial/devices/ttyUSB0/latency_timer``
 
 Installation
 ============
 - Go to workspace
 
-  - git clone https://github.com/abmt-community/rt_mbed.git
-  - git clone https://github.com/abmt-community/mbed_nodes.git
+  - ``git clone https://github.com/abmt-community/rt_mbed.git``
+  - ``git clone https://github.com/abmt-community/mbed_nodes.git``
 
-- sudo apt-get install pip wget openocd zip
-- pip install mbed-cli jinja2 pyyaml jsonschema mbed_ls mbed_host_tests mbed_greentea pyelftools pycryptodome pyusb cmsis_pack_manager psutil cryptography click cbor
+- ``sudo apt-get install pip wget openocd zip``
+- ``pip install mbed-cli jinja2 pyyaml jsonschema mbed_ls mbed_host_tests mbed_greentea pyelftools pycryptodome pyusb cmsis_pack_manager psutil cryptography click cbor``
 - restart console for PATH update
 
 Mbed sources
@@ -33,13 +33,13 @@ Mbed sources
 Example flash commands
 ======================
 - NOTE: The strings '_ELF_FILE_' and '_BIN_FILE_' in the flash command will be replaces by the actual binary created by mbed.
-- openocd -f  interface/stlink.cfg -f target/stm32f1x.cfg -c 'program _ELF_FILE_ verify reset exit'
-- openocd -f  interface/cmsis-dap.cfg -f target/stm32f1x.cfg -c 'program _ELF_FILE_ verify reset exit'
-- pyocd flash _ELF_FILE_ -e chip -t stm32f103rc
-- st-flash --reset --flash=128k write  _BIN_FILE_ 0x8000000
-- stm32flash -b 576000 -w  _BIN_FILE_ -v -g 0x0 /dev/ttyUSB0
-- test -f /media/<username>/RPI-RP2/INFO_UF2.TXT && /path_to_elf2uf2/elf2uf2 BUILD/$TARGET/GCC_ARM/*.elf /media/<username>/RPI-RP2/mbed.uf2
-- pyocd flash BUILD/$TARGET/GCC_ARM/*.elf -t rp2040
+- ``openocd -f  interface/stlink.cfg -f target/stm32f1x.cfg -c 'program _ELF_FILE_ verify reset exit'``
+- ``openocd -f  interface/cmsis-dap.cfg -f target/stm32f1x.cfg -c 'program _ELF_FILE_ verify reset exit'``
+- ``pyocd flash _ELF_FILE_ -e chip -t stm32f103rc``
+- ``st-flash --reset --flash=128k write  _BIN_FILE_ 0x8000000``
+- ``stm32flash -b 576000 -w  _BIN_FILE_ -v -g 0x0 /dev/ttyUSB0``
+- ``test -f /media/<username>/RPI-RP2/INFO_UF2.TXT && /path_to_elf2uf2/elf2uf2 BUILD/$TARGET/GCC_ARM/*.elf /media/<username>/RPI-RP2/mbed.uf2``
+- ``pyocd flash BUILD/$TARGET/GCC_ARM/*.elf -t rp2040``
 
 Debug
 =====
