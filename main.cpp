@@ -19,13 +19,10 @@ model_adatper_std adapter;
 void abmt::log(std::string s){
 	adapter.log(s);
 }
-void abmt::log_err(std::string s){
-	adapter.log_err(s);
-}
 void abmt::die(std::string s){
-	abmt::log_err("Fatal Error:");
-	abmt::log_err(s);
-	abmt::log_err("Reset!");
+	abmt::log("Fatal Error:");
+	abmt::log(s);
+	abmt::log("Reset!");
 	ThisThread::sleep_for(std::chrono::milliseconds(5));
 	NVIC_SystemReset();
 }
@@ -172,8 +169,8 @@ int main()
 				buffer_error_send = true;
 				out.flush();
 				adapter.clear_daq_lists();
-				abmt::log_err("Error: Data in outbuffer can't be send in 0.1s.");
-				abmt::log_err("Datatransmission stopped. Reduce viewed signals...");
+				abmt::log("Error: Data in outbuffer can't be send in 0.1s.");
+				abmt::log("Datatransmission stopped. Reduce viewed signals...");
 			}
 		}
     }

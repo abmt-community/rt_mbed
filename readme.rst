@@ -25,7 +25,18 @@ Installation
 - ``pip install mbed-cli jinja2 pyyaml jsonschema mbed_ls mbed_host_tests mbed_greentea pyelftools pycryptodome pyusb cmsis_pack_manager psutil cryptography click cbor``
 - restart console for PATH update
 
-Mbed sources
+Setup Mbed In Python Venv
+=========================
+``$ python -m venv mbed_venv/
+$ ./mbed_venv/bin/pip install mbed-cli
+$ ./mbed_venv/bin/pip install pyocd
+$ ./mbed_venv/bin/pip jinja2
+$ ./mbed_venv/bin/pip jsonschema
+$ ./mbed_venv/bin/pip pyelftools==0.29
+``
+Call ``source mbed_venv/bin/activate`` before starting abmt.
+
+Mbed Sources
 ============
 - https://api.github.com/repos/ARMmbed/mbed-os/tarball/mbed-os-6.16.0
 - https://github.com/arduino/mbed-os/archive/refs/heads/extrapatches-6.16.0.zip
@@ -39,7 +50,7 @@ Example flash commands
 - ``st-flash --reset --flash=128k write  _BIN_FILE_ 0x8000000``
 - ``stm32flash -b 576000 -w  _BIN_FILE_ -v -g 0x0 /dev/ttyUSB0``
 - ``test -f /media/<username>/RPI-RP2/INFO_UF2.TXT && /path_to_elf2uf2/elf2uf2 BUILD/$TARGET/GCC_ARM/*.elf /media/<username>/RPI-RP2/mbed.uf2``
-- ``pyocd flash BUILD/$TARGET/GCC_ARM/*.elf -t rp2040``
+- ``pyocd flash _ELF_FILE_ -t rp2040``
 
 Debug
 =====
@@ -57,11 +68,13 @@ Debug
 
 Tips
 -----
+- config options for mbed_app.json: call ``mbed compile --config`` in build directory
 - pyocd can decode threads
 - The build-directory contains a debug.sh that might help
 - mbeds hard fault handler has a blinking pattern. You could try to increase the stack size.
 - You can use pyocd to flash. STM32F103 need a full chip erase. ``pyocd flash --target stm32f103rc -e chip path/to/bin_hex_or_elf``
 - When mbed crashes it dumps some info on the serial port (Pins: CONSOLE_RX/-TX).
+- picoprobe: ``SUBSYSTEM=="usb", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="000c", MODE="0666"``
 
 Raspbery Pi Pico Notes
 ======================
@@ -70,6 +83,11 @@ Raspbery Pi Pico Notes
 - Target: RASPBERRY_PI_PICO
 - elf2uf2: https://github.com/rej696/elf2uf2
 - tip: enable auto-mount
+
+Low-Power
+=========
+- you may want to use the rt_mbed_bm runtime
+- for very long raster intervals setting the ``"target.lpticker_lptim": 0`` for STM32 devices may save view uA. 
 
 Konwn Issues
 ============
