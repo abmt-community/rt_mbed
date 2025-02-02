@@ -1,3 +1,9 @@
+======================
+discontinued rutime
+======================
+Due to not supporting string_view and an unfluffy build system in mbed_ce the development of this runtime is stalled. It wont work with ABMT v21. Feel free to make a pull request.
+
+
 =====================
 Mbed runtime for abmt
 =====================
